@@ -2,19 +2,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using VideoPoker.Models;
 using TMPro;
+using System.Collections.Generic;
 
 namespace VideoPoker.UI
 {
     public class CardDisplay : MonoBehaviour
     {
         [SerializeField] private Image cardBackground;
-        [SerializeField] private Image suitIcon;
+        [SerializeField] private TextMeshProUGUI suitIcon;  // Changed from Image to TextMeshProUGUI
         [SerializeField] private TextMeshProUGUI rankText;
         [SerializeField] private Button holdButton;
         [SerializeField] private GameObject holdIndicator;
         
         private Card currentCard;
         private bool isHeld;
+
+        private readonly Dictionary<Suit, string> suitSymbols = new Dictionary<Suit, string>
+        {
+            { Suit.Hearts, "♥" },
+            { Suit.Diamonds, "♦" },
+            { Suit.Clubs, "♣" },
+            { Suit.Spades, "♠" }
+        };
 
         public bool IsHeld => isHeld;
 
@@ -27,11 +36,23 @@ namespace VideoPoker.UI
         public void DisplayCard(Card card)
         {
             currentCard = card;
-            rankText.text = card.Rank.ToString();
-            // Note: You'll need to set up proper suit icons/sprites
+            rankText.text = GetRankDisplay(card.Rank);
+            suitIcon.text = suitSymbols[card.Suit];         // Directly set text
             suitIcon.color = card.Suit == Suit.Hearts || card.Suit == Suit.Diamonds 
                 ? Color.red : Color.black;
             gameObject.SetActive(true);
+        }
+
+        private string GetRankDisplay(Rank rank)
+        {
+            return rank switch
+            {
+                Rank.Jack => "J",
+                Rank.Queen => "Q",
+                Rank.King => "K",
+                Rank.Ace => "A",
+                _ => ((int)rank).ToString()
+            };
         }
 
         public void HideCard()

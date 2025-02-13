@@ -49,5 +49,13 @@ namespace VideoPoker.UI
         {
             return currentHand.ToArray();
         }
+
+        public void ClearHoldStates()
+        {
+            foreach (var display in cardDisplays)
+            {
+                display.SetHoldState(false);
+            }
+        }
     }
 }

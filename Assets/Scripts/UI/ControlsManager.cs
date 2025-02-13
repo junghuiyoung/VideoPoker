@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using VideoPoker.Game;   // Add this line to reference GameManager
 
 namespace VideoPoker.UI
 {
@@ -13,6 +14,8 @@ namespace VideoPoker.UI
         
         [Header("Labels")]
         [SerializeField] private TextMeshProUGUI dealButtonText;
+
+        [SerializeField] private GameManager gameManager;
 
         private bool isFirstDeal = true;
 
@@ -30,17 +33,17 @@ namespace VideoPoker.UI
             isFirstDeal = !isFirstDeal;
             UpdateDealButtonText(isFirstDeal);
             SetBettingEnabled(isFirstDeal);
-            // We'll hook up the actual dealing logic later
+            gameManager.OnDealPressed();
         }
 
         private void OnBetOnePressed()
         {
-            // We'll implement betting logic later
+            gameManager.OnBetOnePressed();
         }
 
         private void OnBetMaxPressed()
         {
-            // We'll implement max betting logic later
+            gameManager.OnBetMaxPressed();
         }
 
         private void UpdateDealButtonText(bool isFirstDeal)
